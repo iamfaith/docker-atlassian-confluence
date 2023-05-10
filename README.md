@@ -14,6 +14,36 @@ docker run -d -p 8090:8090 wwtg99/atlassian-confluence:latest
 docker run -d -p 8080:8080 -v <path1>:/var/atlassian/confluence -v <path2>:/opt/atlassian/confluence/logs wwtg99/atlassian-confluence:latest
 ```
 
+```
+docker run -d -p 8888:8080 -p 8090:8090 -v `pwd`:/var/atlassian/confluence --name con wwtg99/atlassian-confluence:latest
+```
+
+```
+version: '3.4'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_DB: testdb
+    ports:
+      - 5432:5432
+```
+
+```
+docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 postgres
+```
+
+使用 host.docker.internal 作为 host 名来构建 connection string，以便从容器内部访问 host 机器上的 postgres 服务。例如：
+```
+host=host.docker.internal;port=5432;database=db1;username=userxyz;password=password123
+```
+使用容器名或服务名作为 host 名来构建 connection string，以便从容器之间访问 postgres 服务。例如：
+```
+host=postgres;port=5432;database=testdb;username=user;password=pass
+```
+
 ## 配置
 
 ### 环境变量
